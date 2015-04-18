@@ -6,8 +6,8 @@ import nn.Helper._
 import org.apache.spark.{SparkContext, SparkConf}
 
 
-case class RunSpec(dataSize: Int, networkSize: Seq[Int], cpuNo: Int, useSpark: Boolean){
-  def paramsList = List(dataSize, networkSize, cpuNo, useSpark)
+case class RunSpec(dataSize: Int, networkSize: Seq[Int], cpuNo: Int, epochs: Int, useSpark: Boolean){
+  def paramsList = List(dataSize, networkSize, cpuNo, epochs, useSpark)
 }
 
 case class RunResult(spec: RunSpec, accuracy: Double, timeInS: Long){
@@ -44,13 +44,13 @@ object ExpRunner {
 
             new SparkContext(conf)
           }
-          val network = DistributedNeuralNetwork(networkSize).distributedSGDByIterator(trainD, trainL, 10, 0.01, 100, sc)
+          val network = DistributedNeuralNetwork(networkSize).distributedSGDByIterator(trainD, trainL, 10, 0.01, epochs, sc)
           sc.stop()
           network
         }
       else
         time {
-          GenericNeuralNetwork(networkSize).SGDByIterator(trainD, trainL, 10, 0.01, 100)
+          GenericNeuralNetwork(networkSize).SGDByIterator(trainD, trainL, 10, 0.01, epochs)
         }
 
     //produce result

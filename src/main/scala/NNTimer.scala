@@ -6,7 +6,7 @@ object NNTimer {
     val dataSize = 500
     val networkSize = Seq(784, 60, 10)
     val cpuNo = Seq(4)
-    val runSpecs = cpuNo.map { RunSpec(dataSize, networkSize, _, true) }
+    val runSpecs = cpuNo.map { RunSpec(dataSize, networkSize, _, 1, true) }
     runSpecs.map(rs => {
       val r = ExpRunner.run(rs, url)
       IOHelper.writeRowToCSV(r, "run_results.csv")
@@ -17,7 +17,7 @@ object NNTimer {
     val dataSize = 60000                  //fixed
     val networkSize = Seq(784, 60, 10)    //fixed
     val cpuNo = Range(4, 85, 4)           //varies
-    val runSpecs = cpuNo.map { RunSpec(dataSize, networkSize, _, true) }
+    val runSpecs = cpuNo.map { RunSpec(dataSize, networkSize, _, epochs, true) }
     runSpecs.map(rs => {
       val r = ExpRunner.run(rs, url)
       IOHelper.writeRowToCSV(r, "run_results.csv")
@@ -28,7 +28,7 @@ object NNTimer {
     val dataSize = Range(10000, 60001, 5000)                  //fixed
     val networkSize = Seq(784, 60, 10)    //fixed
     val cpuNo = 84           //varies
-    val runSpecs = dataSize.map { RunSpec(_, networkSize, cpuNo, true)}
+    val runSpecs = dataSize.map { RunSpec(_, networkSize, cpuNo, epochs, true)}
     runSpecs.map(rs => {
       val r = ExpRunner.run(rs, url)
       IOHelper.writeRowToCSV(r, "run_results.csv")
@@ -39,7 +39,7 @@ object NNTimer {
     val dataSize = 60000                  //fixed
     val networkSize = Range(10, 61, 10).map(Seq(784, _, 10))
     val cpuNo = 84           //varies
-    val runSpecs = networkSize.map { RunSpec(dataSize, _, cpuNo, true)}
+    val runSpecs = networkSize.map { RunSpec(dataSize, _, cpuNo, epochs, true)}
     runSpecs.map(rs => {
       val r = ExpRunner.run(rs, url)
       IOHelper.writeRowToCSV(r, "run_results.csv")
