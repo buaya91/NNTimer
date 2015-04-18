@@ -46,7 +46,7 @@ case class DistributedNeuralNetwork(override val weights: NetworkWeights,
     val miniBatches = (batching[SingleData](input, batchSize), batching[SingleData](label, batchSize)).
       zipped.toIndexedSeq
 
-    val miniBatchesRDD = sc.parallelize(miniBatches)
+    val miniBatchesRDD = sc.parallelize(miniBatches).cache()
 
     var trainedNN: Broadcast[GenericNeuralNetwork] = sc.broadcast(this)
 
